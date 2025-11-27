@@ -41,7 +41,7 @@ func ColorFromSRGB(r, g, b, alpha float64) Color {
 }
 
 // ColorFromSRGBColor converts an sRGB color.Color to Color.
-// As special cases, color.NRGBA and color.NRGBA64 are handled directly without assuming premultiplied alpha.
+// As special cases, [color.NRGBA] and [color.NRGBA64] are handled directly without assuming premultiplied alpha.
 // For other [color.Color] values, the RGBA method is used, assuming premultiplied alpha.
 func ColorFromSRGBColor(c color.Color) Color {
 	switch v := c.(type) {
