@@ -31,7 +31,7 @@ func ColorFromXYZ(x, y, z, alpha float64) Color {
 	}
 }
 
-// ColorFromSRGB builds a Color from non-linear sRGB channels in [0,1] and alpha.
+// ColorFromSRGB builds a Color from nonlinear sRGB channels in [0,1] and alpha.
 func ColorFromSRGB(r, g, b, alpha float64) Color {
 	r = degamma(r)
 	g = degamma(g)
@@ -204,7 +204,7 @@ func ColorFromLinearSRGBColor(c color.Color) Color {
 	}
 }
 
-// ColorFromDisplayP3 builds a Color from non-linear Display P3 channels in [0,1] and alpha.
+// ColorFromDisplayP3 builds a Color from nonlinear Display P3 channels in [0,1] and alpha.
 func ColorFromDisplayP3(r, g, b, alpha float64) Color {
 	r = degamma(r)
 	g = degamma(g)
@@ -253,7 +253,7 @@ func (c Color) XYZ() (x, y, z, a float64) {
 	return c.x, c.y, c.z, c.alpha
 }
 
-// SRGB converts Color to non-linear sRGB channels and alpha.
+// SRGB converts Color to nonlinear sRGB channels and alpha.
 func (c Color) SRGB() (r, g, b, a float64) {
 	r, g, b, a = c.LinearSRGB()
 	r = gamma(r)
@@ -262,7 +262,7 @@ func (c Color) SRGB() (r, g, b, a float64) {
 	return
 }
 
-// SRGBColor converts Color to a non-linear sRGB color.NRGBA64.
+// SRGBColor converts Color to a nonlinear sRGB [color.Color].
 func (c Color) SRGBColor() color.Color {
 	r, g, b, a := c.SRGB()
 	return color.NRGBA64{
@@ -282,7 +282,7 @@ func (c Color) LinearSRGB() (r, g, b, a float64) {
 	return
 }
 
-// LinearSRGBColor converts Color to a linear sRGB color.NRGBA64.
+// LinearSRGBColor converts Color to a linear sRGB [color.Color].
 func (c Color) LinearSRGBColor() color.Color {
 	r, g, b, a := c.LinearSRGB()
 	return color.NRGBA64{
@@ -293,7 +293,7 @@ func (c Color) LinearSRGBColor() color.Color {
 	}
 }
 
-// DisplayP3 converts Color to non-linear Display P3 channels and alpha.
+// DisplayP3 converts Color to nonlinear Display P3 channels and alpha.
 func (c Color) DisplayP3() (r, g, b, a float64) {
 	r, g, b, a = c.LinearDisplayP3()
 	r = gamma(r)
