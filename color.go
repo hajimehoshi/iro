@@ -47,7 +47,7 @@ func ColorFromSRGBColor(c color.Color) Color {
 	switch v := c.(type) {
 	case color.NRGBA:
 		// Use non-premultiplied alpha directly.
-		// This is not only for performance but also semantics.
+		// This is not only for performance but also for semantics.
 		return ColorFromSRGB(
 			float64(v.R)/0xff,
 			float64(v.G)/0xff,
@@ -56,7 +56,7 @@ func ColorFromSRGBColor(c color.Color) Color {
 		)
 	case color.NRGBA64:
 		// Use non-premultiplied alpha directly.
-		// This is not only for performance but also semantics.
+		// This is not only for performance but also for semantics.
 		return ColorFromSRGB(
 			float64(v.R)/0xffff,
 			float64(v.G)/0xffff,
