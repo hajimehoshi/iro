@@ -41,13 +41,14 @@ func ColorFromSRGB(r, g, b, alpha float64) Color {
 }
 
 // ColorFromSRGBColor converts an sRGB [color.Color] to Color.
-// As special cases, [color.NRGBA] and [color.NRGBA64] are handled directly.
+// As special cases, [color.NRGBA] and [color.NRGBA64] are handled directly without RGBA method calls.
 // For other [color.Color] values, the RGBA method is used, assuming the values are alpha-premultiplied after applied gamma.
 func ColorFromSRGBColor(c color.Color) Color {
 	switch v := c.(type) {
 	case color.NRGBA:
 		// Use non-premultiplied alpha directly.
-		// This is not only for performance but also for semantics.
+		// This is not only for performance but also for semantics:
+		// RGB values are no longer precise after premultiplying alpha.
 		return ColorFromSRGB(
 			float64(v.R)/0xff,
 			float64(v.G)/0xff,
@@ -55,8 +56,7 @@ func ColorFromSRGBColor(c color.Color) Color {
 			float64(v.A)/0xff,
 		)
 	case color.NRGBA64:
-		// Use non-premultiplied alpha directly.
-		// This is not only for performance but also for semantics.
+		// Use non-premultiplied alpha directly in the same way as color.NRGBA.
 		return ColorFromSRGB(
 			float64(v.R)/0xffff,
 			float64(v.G)/0xffff,
@@ -64,6 +64,7 @@ func ColorFromSRGBColor(c color.Color) Color {
 			float64(v.A)/0xffff,
 		)
 	case color.Alpha:
+		// This is just a performance optimization.
 		a := float64(v.A) / 0xff
 		return ColorFromSRGB(
 			1,
@@ -72,6 +73,7 @@ func ColorFromSRGBColor(c color.Color) Color {
 			a,
 		)
 	case color.Alpha16:
+		// This is just a performance optimization.
 		a := float64(v.A) / 0xffff
 		return ColorFromSRGB(
 			1,
@@ -80,6 +82,7 @@ func ColorFromSRGBColor(c color.Color) Color {
 			a,
 		)
 	case color.Gray:
+		// This is just a performance optimization.
 		y := float64(v.Y) / 0xff
 		return ColorFromSRGB(
 			y,
@@ -88,6 +91,7 @@ func ColorFromSRGBColor(c color.Color) Color {
 			1,
 		)
 	case color.Gray16:
+		// This is just a performance optimization.
 		y := float64(v.Y) / 0xffff
 		return ColorFromSRGB(
 			y,
