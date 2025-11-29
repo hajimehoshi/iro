@@ -120,7 +120,7 @@ func TestChainedConversions(t *testing.T) {
 	}
 }
 
-func TestOKLchWhiteBlackRoundTrip(t *testing.T) {
+func TestOKLchRoundTrip(t *testing.T) {
 	testCases := []struct {
 		name  string
 		color color.Color
@@ -132,6 +132,18 @@ func TestOKLchWhiteBlackRoundTrip(t *testing.T) {
 		{
 			name:  "Black",
 			color: color.Black,
+		},
+		{
+			name:  "Red",
+			color: color.RGBA{R: 0xff, A: 0xff},
+		},
+		{
+			name:  "Green",
+			color: color.RGBA{G: 0xff, A: 0xff},
+		},
+		{
+			name:  "Blue",
+			color: color.RGBA{B: 0xff, A: 0xff},
 		},
 	}
 
