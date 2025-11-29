@@ -1,11 +1,13 @@
 // SPDX-License-Identifier: Apache-2.0
 // SPDX-FileCopyrightText: 2025 Hajime Hoshi
 
-package iro
+package iro_test
 
 import (
 	"math"
 	"testing"
+
+	"github.com/hajimehoshi/iro"
 )
 
 const tol = 1e-6
@@ -17,7 +19,7 @@ func check(got, want float64) (float64, bool) {
 
 func TestXYZRoundTrip(t *testing.T) {
 	x0, y0, z0, a0 := 0.3, 0.4, 0.5, 0.6
-	c := ColorFromXYZ(x0, y0, z0, a0)
+	c := iro.ColorFromXYZ(x0, y0, z0, a0)
 	x1, y1, z1, a1 := c.XYZ()
 
 	if diff, ok := check(x1, x0); !ok {
@@ -36,7 +38,7 @@ func TestXYZRoundTrip(t *testing.T) {
 
 func TestSRGBRoundTrip(t *testing.T) {
 	r0, g0, b0, a0 := 0.2, 0.4, 0.6, 0.8
-	c := ColorFromSRGB(r0, g0, b0, a0)
+	c := iro.ColorFromSRGB(r0, g0, b0, a0)
 	r1, g1, b1, a1 := c.SRGB()
 
 	if diff, ok := check(r1, r0); !ok {
@@ -55,7 +57,7 @@ func TestSRGBRoundTrip(t *testing.T) {
 
 func TestDisplayP3RoundTrip(t *testing.T) {
 	r0, g0, b0, a0 := 0.1, 0.7, 0.3, 0.5
-	c := ColorFromDisplayP3(r0, g0, b0, a0)
+	c := iro.ColorFromDisplayP3(r0, g0, b0, a0)
 	r1, g1, b1, a1 := c.DisplayP3()
 
 	if diff, ok := check(r1, r0); !ok {
@@ -74,7 +76,7 @@ func TestDisplayP3RoundTrip(t *testing.T) {
 
 func TestOKLabRoundTrip(t *testing.T) {
 	l0, a0, b0, alpha0 := 0.5, 0.1, -0.2, 0.9
-	c := ColorFromOKLab(l0, a0, b0, alpha0)
+	c := iro.ColorFromOKLab(l0, a0, b0, alpha0)
 	l1, a1, b1, alpha1 := c.OKLab()
 
 	if diff, ok := check(l1, l0); !ok {
@@ -94,13 +96,13 @@ func TestOKLabRoundTrip(t *testing.T) {
 func TestChainedConversions(t *testing.T) {
 	r0, g0, b0, a0 := 0.15, 0.35, 0.55, 0.75
 
-	cSRGB := ColorFromSRGB(r0, g0, b0, a0)
+	cSRGB := iro.ColorFromSRGB(r0, g0, b0, a0)
 	p3r, p3g, p3b, p3a := cSRGB.DisplayP3()
 
-	cP3 := ColorFromDisplayP3(p3r, p3g, p3b, p3a)
+	cP3 := iro.ColorFromDisplayP3(p3r, p3g, p3b, p3a)
 	l, aComp, bComp, alpha := cP3.OKLab()
 
-	cLab := ColorFromOKLab(l, aComp, bComp, alpha)
+	cLab := iro.ColorFromOKLab(l, aComp, bComp, alpha)
 	r1, g1, b1, a1 := cLab.SRGB()
 
 	if diff, ok := check(r1, r0); !ok {
