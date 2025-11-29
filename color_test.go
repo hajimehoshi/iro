@@ -120,7 +120,61 @@ func TestChainedConversions(t *testing.T) {
 	}
 }
 
-func TestOKLchRoundTrip(t *testing.T) {
+func TestSRGBAndOKLabRoundTrip(t *testing.T) {
+	testCases := []struct {
+		name  string
+		color color.Color
+	}{
+		{
+			name:  "White",
+			color: color.White,
+		},
+		{
+			name:  "Black",
+			color: color.Black,
+		},
+		{
+			name:  "Red",
+			color: color.RGBA{R: 0xff, A: 0xff},
+		},
+		{
+			name:  "Green",
+			color: color.RGBA{G: 0xff, A: 0xff},
+		},
+		{
+			name:  "Blue",
+			color: color.RGBA{B: 0xff, A: 0xff},
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			c := iro.ColorFromSRGBColor(tc.color)
+			l, a, b, alpha := c.OKLab()
+			c2 := iro.ColorFromOKLab(l, a, b, alpha)
+			got := c2.SRGBColor()
+			want := tc.color
+
+			r1, g1, b1, a1 := got.RGBA()
+			r0, g0, b0, a0 := want.RGBA()
+
+			if r1 != r0 {
+				t.Errorf("r: got %d, want %d", r1, r0)
+			}
+			if g1 != g0 {
+				t.Errorf("g: got %d, want %d", g1, g0)
+			}
+			if b1 != b0 {
+				t.Errorf("b: got %d, want %d", b1, b0)
+			}
+			if a1 != a0 {
+				t.Errorf("a: got %d, want %d", a1, a0)
+			}
+		})
+	}
+}
+
+func TestSRGBAndOKLchRoundTrip(t *testing.T) {
 	testCases := []struct {
 		name  string
 		color color.Color
@@ -155,20 +209,20 @@ func TestOKLchRoundTrip(t *testing.T) {
 			got := c2.SRGBColor()
 			want := tc.color
 
-			r, g, b, a2 := got.RGBA()
+			r1, g1, b1, a1 := got.RGBA()
 			r0, g0, b0, a0 := want.RGBA()
 
-			if r != r0 {
-				t.Errorf("r: got %d, want %d", r, r0)
+			if r1 != r0 {
+				t.Errorf("r: got %d, want %d", r1, r0)
 			}
-			if g != g0 {
-				t.Errorf("g: got %d, want %d", g, g0)
+			if g1 != g0 {
+				t.Errorf("g: got %d, want %d", g1, g0)
 			}
-			if b != b0 {
-				t.Errorf("b: got %d, want %d", b, b0)
+			if b1 != b0 {
+				t.Errorf("b: got %d, want %d", b1, b0)
 			}
-			if a2 != a0 {
-				t.Errorf("a: got %d, want %d", a2, a0)
+			if a1 != a0 {
+				t.Errorf("a: got %d, want %d", a1, a0)
 			}
 		})
 	}
