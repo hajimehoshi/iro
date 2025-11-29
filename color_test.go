@@ -152,11 +152,11 @@ func TestSRGBAndOKLabRoundTrip(t *testing.T) {
 			c := iro.ColorFromSRGBColor(tc.color)
 			l, a, b, alpha := c.OKLab()
 			c2 := iro.ColorFromOKLab(l, a, b, alpha)
-			got := c2.SRGBColor()
 			want := tc.color
+			got := c2.SRGBColor()
 
-			r1, g1, b1, a1 := got.RGBA()
 			r0, g0, b0, a0 := want.RGBA()
+			r1, g1, b1, a1 := got.RGBA()
 
 			if r1 != r0 {
 				t.Errorf("r: got %d, want %d", r1, r0)
@@ -206,11 +206,11 @@ func TestSRGBAndOKLchRoundTrip(t *testing.T) {
 			c := iro.ColorFromSRGBColor(tc.color)
 			l, ch, h, a := c.OKLch()
 			c2 := iro.ColorFromOKLch(l, ch, h, a)
-			got := c2.SRGBColor()
 			want := tc.color
+			got := c2.SRGBColor()
 
-			r1, g1, b1, a1 := got.RGBA()
 			r0, g0, b0, a0 := want.RGBA()
+			r1, g1, b1, a1 := got.RGBA()
 
 			if r1 != r0 {
 				t.Errorf("r: got %d, want %d", r1, r0)
