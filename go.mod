@@ -1,3 +1,3 @@
 module github.com/hajimehoshi/iro
 
-go 1.24
+go 1.21
