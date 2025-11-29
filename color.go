@@ -361,5 +361,5 @@ func gamma(x float64) float64 {
 }
 
 func toUint16(v float64) uint16 {
-	return uint16(min(max(math.Round(v*0xffff), 0, 0xffff)))
+	return uint16(min(max(math.Round(v*0xffff), 0), 0xffff))
 }

@@ -4,6 +4,7 @@
 package iro_test
 
 import (
+	"image/color"
 	"math"
 	"testing"
 
@@ -116,5 +117,47 @@ func TestChainedConversions(t *testing.T) {
 	}
 	if diff, ok := check(a1, a0); !ok {
 		t.Errorf("a: got %f, want %f (diff=%g)", a1, a0, diff)
+	}
+}
+
+func TestOKLchWhiteBlackRoundTrip(t *testing.T) {
+	testCases := []struct {
+		name  string
+		color color.Color
+	}{
+		{
+			name:  "White",
+			color: color.White,
+		},
+		{
+			name:  "Black",
+			color: color.Black,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			c := iro.ColorFromSRGBColor(tc.color)
+			l, ch, h, a := c.OKLch()
+			c2 := iro.ColorFromOKLch(l, ch, h, a)
+			got := c2.SRGBColor()
+			want := tc.color
+
+			r, g, b, a2 := got.RGBA()
+			r0, g0, b0, a0 := want.RGBA()
+
+			if r != r0 {
+				t.Errorf("r: got %d, want %d", r, r0)
+			}
+			if g != g0 {
+				t.Errorf("g: got %d, want %d", g, g0)
+			}
+			if b != b0 {
+				t.Errorf("b: got %d, want %d", b, b0)
+			}
+			if a2 != a0 {
+				t.Errorf("a: got %d, want %d", a2, a0)
+			}
+		})
 	}
 }
