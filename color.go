@@ -21,6 +21,21 @@ type Color struct {
 	alpha float64
 }
 
+// Alpha returns the alpha value.
+func (c Color) Alpha() float64 {
+	return c.alpha
+}
+
+// WithAlpha returns a new Color with the alpha value.
+func (c Color) WithAlpha(alpha float64) Color {
+	return Color{
+		x:     c.x,
+		y:     c.y,
+		z:     c.z,
+		alpha: alpha,
+	}
+}
+
 // ColorFromXYZ builds a Color from XYZ D65 coordinates and alpha in [0,1].
 func ColorFromXYZ(x, y, z, alpha float64) Color {
 	return Color{
