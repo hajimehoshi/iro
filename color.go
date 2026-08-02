@@ -242,8 +242,15 @@ func ColorFromLinearDisplayP3(r, g, b, alpha float64) Color {
 	}
 }
 
-// ColorFromOKLab builds a Color from OKLab components and alpha.
+// ColorFromOKLab builds a Color from Oklab components and alpha.
+//
+// Deprecated: Use [ColorFromOklab] instead.
 func ColorFromOKLab(l, a, b, alpha float64) Color {
+	return ColorFromOklab(l, a, b, alpha)
+}
+
+// ColorFromOklab builds a Color from Oklab components and alpha.
+func ColorFromOklab(l, a, b, alpha float64) Color {
 	l_ := l + 0.3963377773761749*a + 0.2158037573099136*b
 	m_ := l - 0.1055613458156586*a + -0.0638541728258133*b
 	s_ := l - 0.0894841775298119*a - 1.2914855480194092*b
@@ -260,11 +267,23 @@ func ColorFromOKLab(l, a, b, alpha float64) Color {
 	}
 }
 
-// ColorFromOKLch builds a Color from OKLch components (h in radians) and alpha.
+// ColorFromOKLch builds a Color from Oklch components (h in radians) and alpha.
+//
+// Deprecated: Use [ColorFromOklch] instead, which takes h in degrees.
 func ColorFromOKLch(l, c, h, alpha float64) Color {
+	return colorFromOklchRadians(l, c, h, alpha)
+}
+
+// ColorFromOklch builds a Color from Oklch components (h in degrees) and alpha.
+func ColorFromOklch(l, c, h, alpha float64) Color {
+	return colorFromOklchRadians(l, c, h*math.Pi/180, alpha)
+}
+
+// colorFromOklchRadians is [ColorFromOklch] with h in radians.
+func colorFromOklchRadians(l, c, h, alpha float64) Color {
 	a := math.Cos(h) * c
 	b := math.Sin(h) * c
-	return ColorFromOKLab(l, a, b, alpha)
+	return ColorFromOklab(l, a, b, alpha)
 }
 
 // XYZ returns the XYZ D65 coordinates and alpha.
@@ -330,8 +349,15 @@ func (c Color) LinearDisplayP3() (r, g, b, a float64) {
 	return
 }
 
-// OKLab converts Color to OKLab components and alpha.
+// OKLab converts Color to Oklab components and alpha.
+//
+// Deprecated: Use [Color.Oklab] instead.
 func (c Color) OKLab() (l, a, b, alpha float64) {
+	return c.Oklab()
+}
+
+// Oklab converts Color to Oklab components and alpha.
+func (c Color) Oklab() (l, a, b, alpha float64) {
 	l_ := 0.8190224379967030*c.x + 0.3619062600528904*c.y + -0.1288737815209879*c.z
 	m_ := 0.0329836539323885*c.x + 0.9292868615863434*c.y + 0.0361446663506424*c.z
 	s_ := 0.0481771893596242*c.x + 0.2642395317527308*c.y + 0.6335478284694309*c.z
@@ -347,9 +373,23 @@ func (c Color) OKLab() (l, a, b, alpha float64) {
 	return
 }
 
-// OKLch converts Color to OKLch components (h in radians) and alpha.
+// OKLch converts Color to Oklch components (h in radians) and alpha.
+//
+// Deprecated: Use [Color.Oklch] instead, which returns h in degrees.
 func (c Color) OKLch() (l, ch, h, alpha float64) {
-	l, a, b, alpha := c.OKLab()
+	return c.oklchRadians()
+}
+
+// Oklch converts Color to Oklch components (h in degrees, in [0, 360)) and alpha.
+func (c Color) Oklch() (l, ch, h, alpha float64) {
+	l, ch, h, alpha = c.oklchRadians()
+	h = math.Mod(h*180/math.Pi+360, 360)
+	return
+}
+
+// oklchRadians is [Color.Oklch] with h in radians.
+func (c Color) oklchRadians() (l, ch, h, alpha float64) {
+	l, a, b, alpha := c.Oklab()
 	ch = math.Hypot(a, b)
 	h = math.Atan2(b, a)
 	return

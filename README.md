@@ -11,18 +11,16 @@ package main
 
 import (
 	"fmt"
-	"math"
 
 	"github.com/hajimehoshi/iro"
 )
 
 func main() {
-	// Convert nonlinear sRGB to OKLch.
+	// Convert nonlinear sRGB to Oklch.
 	c := iro.ColorFromSRGB(0.2, 0.4, 0.6, 1)
-	l, ch, h, alpha := c.OKLch()
-	hDeg := h * 180 / math.Pi
+	l, ch, h, alpha := c.Oklch()
 
-	fmt.Printf("L=%.6f C=%.6f h=%.2f° alpha=%.2f\n", l, ch, hDeg, alpha)
+	fmt.Printf("L=%.6f C=%.6f h=%.2f° alpha=%.2f\n", l, ch, h, alpha)
 }
 ```
 

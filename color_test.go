@@ -75,10 +75,10 @@ func TestDisplayP3RoundTrip(t *testing.T) {
 	}
 }
 
-func TestOKLabRoundTrip(t *testing.T) {
+func TestOklabRoundTrip(t *testing.T) {
 	l0, a0, b0, alpha0 := 0.5, 0.1, -0.2, 0.9
-	c := iro.ColorFromOKLab(l0, a0, b0, alpha0)
-	l1, a1, b1, alpha1 := c.OKLab()
+	c := iro.ColorFromOklab(l0, a0, b0, alpha0)
+	l1, a1, b1, alpha1 := c.Oklab()
 
 	if diff, ok := check(l1, l0); !ok {
 		t.Errorf("l: got %f, want %f (diff=%g)", l1, l0, diff)
@@ -101,9 +101,9 @@ func TestChainedConversions(t *testing.T) {
 	p3r, p3g, p3b, p3a := cSRGB.DisplayP3()
 
 	cP3 := iro.ColorFromDisplayP3(p3r, p3g, p3b, p3a)
-	l, aComp, bComp, alpha := cP3.OKLab()
+	l, aComp, bComp, alpha := cP3.Oklab()
 
-	cLab := iro.ColorFromOKLab(l, aComp, bComp, alpha)
+	cLab := iro.ColorFromOklab(l, aComp, bComp, alpha)
 	r1, g1, b1, a1 := cLab.SRGB()
 
 	if diff, ok := check(r1, r0); !ok {
@@ -120,7 +120,7 @@ func TestChainedConversions(t *testing.T) {
 	}
 }
 
-func TestSRGBAndOKLabRoundTrip(t *testing.T) {
+func TestSRGBAndOklabRoundTrip(t *testing.T) {
 	testCases := []struct {
 		name  string
 		color color.Color
@@ -150,8 +150,8 @@ func TestSRGBAndOKLabRoundTrip(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			c := iro.ColorFromSRGBColor(tc.color)
-			l, a, b, alpha := c.OKLab()
-			c2 := iro.ColorFromOKLab(l, a, b, alpha)
+			l, a, b, alpha := c.Oklab()
+			c2 := iro.ColorFromOklab(l, a, b, alpha)
 			want := tc.color
 			got := c2.SRGBColor()
 
@@ -174,7 +174,7 @@ func TestSRGBAndOKLabRoundTrip(t *testing.T) {
 	}
 }
 
-func TestSRGBAndOKLchRoundTrip(t *testing.T) {
+func TestSRGBAndOklchRoundTrip(t *testing.T) {
 	testCases := []struct {
 		name  string
 		color color.Color
@@ -204,8 +204,8 @@ func TestSRGBAndOKLchRoundTrip(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			c := iro.ColorFromSRGBColor(tc.color)
-			l, ch, h, a := c.OKLch()
-			c2 := iro.ColorFromOKLch(l, ch, h, a)
+			l, ch, h, a := c.Oklch()
+			c2 := iro.ColorFromOklch(l, ch, h, a)
 			want := tc.color
 			got := c2.SRGBColor()
 
