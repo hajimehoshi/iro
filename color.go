@@ -260,7 +260,7 @@ func ColorFromOKLab(l, a, b, alpha float64) Color {
 	}
 }
 
-// ColorFromOKLch builds a Color from OKLCh components (h in radians) and alpha.
+// ColorFromOKLch builds a Color from OKLch components (h in radians) and alpha.
 func ColorFromOKLch(l, c, h, alpha float64) Color {
 	a := math.Cos(h) * c
 	b := math.Sin(h) * c
@@ -347,7 +347,7 @@ func (c Color) OKLab() (l, a, b, alpha float64) {
 	return
 }
 
-// OKLch converts Color to OKLCh components (h in radians) and alpha.
+// OKLch converts Color to OKLch components (h in radians) and alpha.
 func (c Color) OKLch() (l, ch, h, alpha float64) {
 	l, a, b, alpha := c.OKLab()
 	ch = math.Hypot(a, b)
